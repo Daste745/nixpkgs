@@ -5,7 +5,6 @@
   pkg-config,
   protobuf,
   rustPlatform,
-  stdenv,
 }:
 
 # Updating this package will force an update for prisma. The
@@ -13,16 +12,16 @@
 # function correctly.
 rustPlatform.buildRustPackage rec {
   pname = "prisma-engines";
-  version = "6.19.0";
+  version = "7.0.1";
 
   src = fetchFromGitHub {
     owner = "prisma";
     repo = "prisma-engines";
     rev = version;
-    hash = "sha256-icFgoKIrr3fGSVmSczlMJiT5KSb746kVldtrk+Q0wW8=";
+    hash = "sha256-+8k+M2+WySR2CeywYlhU/jd3av/4UeUoEOlO/qHUk5o=";
   };
 
-  cargoHash = "sha256-PgCfBcmK9RCA5BMacJ5oYEpo2DnBKx2xPbdLb79yCCY=";
+  cargoHash = "sha256-n83hJfSlvuaoBb3w9Rk8+q2emjGCoPDHhFdoVzhf4sM=";
 
   # Use system openssl.
   OPENSSL_NO_VENDOR = 1;
@@ -46,18 +45,10 @@ rustPlatform.buildRustPackage rec {
 
   cargoBuildFlags = [
     "-p"
-    "query-engine"
-    "-p"
-    "query-engine-node-api"
-    "-p"
     "schema-engine-cli"
     "-p"
     "prisma-fmt"
   ];
-
-  postInstall = ''
-    mv $out/lib/libquery_engine${stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/libquery_engine.node
-  '';
 
   # Tests are long to compile
   doCheck = false;
@@ -78,6 +69,8 @@ rustPlatform.buildRustPackage rec {
 }
 
 ### Troubleshooting
+# TODO: Point to the wiki:
+# https://wiki.nixos.org/wiki/Prisma
 # Here's an example application using Prisma with Nix: https://github.com/pimeys/nix-prisma-example
 # At example's `flake.nix` shellHook, notice the requirement of defining environment variables for prisma, it's values will show on `prisma --version`.
 # Read the example's README: https://github.com/pimeys/nix-prisma-example/blob/main/README.md

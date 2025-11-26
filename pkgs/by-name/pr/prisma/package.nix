@@ -13,13 +13,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "prisma";
-  version = "6.19.0";
+  version = "7.0.1";
 
   src = fetchFromGitHub {
     owner = "prisma";
     repo = "prisma";
     rev = finalAttrs.version;
-    hash = "sha256-lFPAu296cQMDnEcLTReSHuLuOz13kd7n0GV+ifcX+lQ=";
+    hash = "sha256-bmmthEFMBMJAracWUCU/6Nyic05JglP5t1VAWPVKFnU=";
   };
 
   nativeBuildInputs = [
@@ -33,7 +33,7 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = pnpm_10.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 1;
-    hash = "sha256-9v30vhclD+sPcui/VG8dwaC8XGU6QFs/Gu8rjjoQy/w=";
+    hash = "sha256-UpMB8pzgCqvgvTyfyKY9EKqBkGEQYDvH1m+WWXvAZyo=";
   };
 
   patchPhase = ''
@@ -83,9 +83,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     makeWrapper "${lib.getExe nodejs}" "$out/bin/prisma" \
       --add-flags "$out/lib/prisma/packages/cli/build/index.js" \
-      --set PRISMA_SCHEMA_ENGINE_BINARY ${prisma-engines}/bin/schema-engine \
-      --set PRISMA_QUERY_ENGINE_BINARY ${prisma-engines}/bin/query-engine \
-      --set PRISMA_QUERY_ENGINE_LIBRARY ${lib.getLib prisma-engines}/lib/libquery_engine.node
+      --set PRISMA_SCHEMA_ENGINE_BINARY ${prisma-engines}/bin/schema-engine
 
     runHook postInstall
   '';
